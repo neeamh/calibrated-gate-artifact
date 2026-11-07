@@ -91,6 +91,7 @@ paper/
   scripts/                       analysis scripts that produce every reported number
   generated/                     their committed outputs (LaTeX macros, tables, figures, JSON audit files)
 data/README.md                   where to obtain the public source data
+IMPLEMENTATION.md                full specification of cohort, roles and every signal (Appendix E summarises it)
 ```
 
 ## What the saved results contain
