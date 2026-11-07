@@ -1,0 +1,3651 @@
+{
+  "protocol": "v0.4.2-followup",
+  "model_sha256": "0b25803fe4dedbd26c8158544e9e01ddf3e86c986e3c441635c83558c1aa3036",
+  "labels": {
+    "table": "followup/base48/dense/FU",
+    "kind": "followup",
+    "design": "dense",
+    "condition": "dense/FU",
+    "dense_set": "FU",
+    "base": 48,
+    "truth": "bad",
+    "known_bad": true
+  },
+  "components": [
+    {
+      "family": "feature_shuffle",
+      "dose": 0.5,
+      "column": "number_inpatient",
+      "seed": 2074035978,
+      "changed_cell_count": 1236,
+      "realized_dose": 0.10801363278860439
+    },
+    {
+      "family": "feature_shuffle",
+      "dose": 0.1,
+      "column": "readmitted_30d",
+      "seed": 1793993300,
+      "changed_cell_count": 188,
+      "realized_dose": 0.016429258061697108
+    }
+  ],
+  "candidate_sha256": "a22788e5aa36a3126a7f6e99c8392c54089ade5792c28967daa0a25b8b1cd3e9",
+  "base_sha256": "48cd32bcc7fa98af0d8827db70149ede606dbc5e06501c57868dfc76ab27a9f1",
+  "v04": {
+    "dimensions": {
+      "fidelity": {
+        "dimension": "fidelity_reference_calibrated",
+        "status": "Pass",
+        "metrics": {
+          "mass_weighted_coverage_deficit": {
+            "estimate": 0.0003495586821637975,
+            "ci_low": 8.738967054089386e-05,
+            "ci_high": 0.0006139124355501129,
+            "ci_width": 0.000526522765009219,
+            "interval_type": "paired reference-row bootstrap (95%)",
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "lower 95% bound > 0.05 -> Fail",
+            "note": "Worst column 'admission_source_id': share of reference patients whose category is absent from the synthetic table, minus the same share for the real floor (synthetic 0.9997; floor 1.0000)."
+          },
+          "detection_auc": {
+            "estimate": 0.5066821519156892,
+            "ci_low": 0.4997037041619368,
+            "ci_high": 0.5135475388581906,
+            "ci_width": 0.013843834696253776,
+            "interval_type": "bootstrap over cross-fitted predictions (95%)",
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "lower bound > floor upper bound + 0.05 -> Conditional (Fail requires null calibration)",
+            "note": "Cross-fitted gradient-boosting classifier two-sample test against the held-out real reference; real-vs-real floor AUC 0.511."
+          },
+          "pmse_ratio_to_real_floor": {
+            "estimate": 0.9939549062925532,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Propensity-score MSE divided by the real-vs-real pMSE (empirical null; 1 = like real)."
+          },
+          "mean_normalized_wasserstein_excess": {
+            "estimate": 0.003672147713779347,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.20 -> Conditional",
+            "note": "Synthetic 0.0156 minus real floor 0.0120."
+          },
+          "mean_jensen_shannon_divergence_excess": {
+            "estimate": 4.522974847516806e-06,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.10 -> Conditional",
+            "note": "Synthetic 0.0019 minus real floor 0.0019."
+          },
+          "association_matrix_error_excess": {
+            "estimate": 0.0008793904437233765,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.15 -> Conditional",
+            "note": "Synthetic 0.0109 minus real floor 0.0100."
+          },
+          "worst_column_normalized_wasserstein": {
+            "estimate": 0.03181955004029634,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Worst continuous column 'num_medications' (reported so a column average cannot hide one broken variable); floor 0.0202."
+          },
+          "clinical_constraint_violation_rate": {
+            "estimate": 0.0,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.01 -> Fail",
+            "note": "{'time_in_hospital >= 0': 0.0, 'num_lab_procedures >= 0': 0.0, 'num_procedures >= 0': 0.0, 'num_medications >= 0': 0.0, 'number_outpatient >= 0': 0.0, 'number_emergency >= 0': 0.0, 'number_inpatient >= 0': 0.0, 'number_diagnoses >= 0': 0.0, 'time_in_hospital >= 1': 0.0, 'time_in_hospital <= 14': 0.0}"
+          }
+        },
+        "weaknesses": [],
+        "provisional_margins": {
+          "coverage_margin": 0.05,
+          "detection_margin": 0.05,
+          "wasserstein_excess": 0.2,
+          "jsd_excess": 0.1,
+          "association_excess": 0.15,
+          "constraint_rate_fail": 0.01
+        },
+        "per_column_coverage": {
+          "race": 1.0,
+          "gender": 1.0,
+          "age": 1.0,
+          "admission_type_id": 0.9998252206589181,
+          "discharge_disposition_id": 0.9998252206589181,
+          "admission_source_id": 0.9996504413178362,
+          "diag_1": 0.9888141221707594,
+          "max_glu_serum": 1.0,
+          "A1Cresult": 1.0,
+          "insulin": 1.0,
+          "change": 1.0,
+          "diabetesMed": 1.0,
+          "readmitted_30d": 1.0
+        },
+        "floor_per_column_coverage": {
+          "race": 1.0,
+          "gender": 1.0,
+          "age": 1.0,
+          "admission_type_id": 1.0,
+          "discharge_disposition_id": 0.9995630516472953,
+          "admission_source_id": 1.0,
+          "diag_1": 0.9874158874421043,
+          "max_glu_serum": 1.0,
+          "A1Cresult": 1.0,
+          "insulin": 1.0,
+          "change": 1.0,
+          "diabetesMed": 1.0,
+          "readmitted_30d": 1.0
+        },
+        "missing_required_evidence": []
+      },
+      "utility": {
+        "dimension": "utility_reference_calibrated",
+        "status": "Conditional",
+        "metrics": {
+          "synthetic_retention_random_forest": {
+            "estimate": 0.9029597408386126,
+            "ci_low": 0.810616455928171,
+            "ci_high": 0.9810709931890452,
+            "ci_width": 0.17045453726087423,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_random_forest": {
+            "estimate": 0.9526363197385043,
+            "ci_low": 0.8716542147163016,
+            "ci_high": 1.04117300516454,
+            "ci_width": 0.16951879044823848,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "synthetic_retention_logistic_regression": {
+            "estimate": 0.8921089059241073,
+            "ci_low": 0.7630688115962344,
+            "ci_high": 1.026489119188903,
+            "ci_width": 0.26342030759266855,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_logistic_regression": {
+            "estimate": 0.9193598233678282,
+            "ci_low": 0.8286411440448838,
+            "ci_high": 1.030828195987053,
+            "ci_width": 0.20218705194216935,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "synthetic_retention_gradient_boosting": {
+            "estimate": 0.8312571714823113,
+            "ci_low": 0.6826584826530789,
+            "ci_high": 1.0044733757994302,
+            "ci_width": 0.32181489314635126,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_gradient_boosting": {
+            "estimate": 0.958478653320857,
+            "ci_low": 0.8085246355360179,
+            "ci_high": 1.111418027440172,
+            "ci_width": 0.302893391904154,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "probe_agreement": {
+            "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+          },
+          "relative_calibration_in_the_large": {
+            "estimate": 1.010121929891964,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": "outside [0.80, 1.25] -> Conditional",
+            "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+          },
+          "relative_calibration_slope": {
+            "estimate": 1.0421626126233448,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": "outside [0.80, 1.25] -> Conditional",
+            "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+          }
+        },
+        "weaknesses": [],
+        "probe_verdicts": {
+          "random_forest": "Conditional",
+          "logistic_regression": "Conditional",
+          "gradient_boosting": "Conditional"
+        },
+        "provisional_margins": {
+          "retention_fail": 0.8,
+          "retention_conditional": 0.9,
+          "calibration_ratio_band": 1.25
+        },
+        "missing_required_evidence": []
+      },
+      "privacy": {
+        "dimension": "privacy",
+        "status": "Fail",
+        "metrics": {
+          "exact_training_duplicate_rate": {
+            "estimate": 8.738967054094207e-05,
+            "ci_low": 0.0,
+            "ci_high": 0.00026216901162282616,
+            "ci_width": 0.00026216901162282616,
+            "interval_type": "synthetic-row bootstrap",
+            "higher_is_worse": true,
+            "flag": true,
+            "status": "Fail",
+            "threshold": "one-sided binomial p < 0.05",
+            "note": "Exact-match count against plug-in E-in-T coincidence rate 0; all T rows used.",
+            "required": true
+          },
+          "median_distance_to_closest_training_record": {
+            "estimate": 2.2804381723699043,
+            "ci_low": 2.2666126800087985,
+            "ci_high": 2.297495265249266,
+            "ci_width": 0.03088258524046772,
+            "interval_type": "synthetic-row bootstrap",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Median standardized mixed-feature distance to the closest real training row; estimated with 10,000 synthetic queries against 10,000 real references; descriptive only, not a privacy guarantee."
+          },
+          "share_closer_than_real_real_floor": {
+            "estimate": 0.0543,
+            "ci_low": 0.050195000000000004,
+            "ci_high": 0.058905,
+            "ci_width": 0.008709999999999996,
+            "interval_type": "synthetic-row bootstrap",
+            "higher_is_worse": true,
+            "flag": true,
+            "status": "Conditional",
+            "threshold": "> 0.05 -> Conditional",
+            "note": "Share of synthetic rows closer to training data than the fifth percentile of non-self real-to-real distances in the bounded distance sample.",
+            "required": true
+          },
+          "nearest_neighbor_distance_ratio_p05": {
+            "estimate": 0.764883373913446,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Fifth percentile of closest-to-second-closest distance ratio; low values identify unusually isolated matches."
+          },
+          "distance_membership_attack_auc": {
+            "estimate": 0.500913485,
+            "ci_low": 0.4931292929666325,
+            "ci_high": 0.5101854600012511,
+            "ci_width": 0.017056167034618597,
+            "interval_type": "candidate-record bootstrap (95%)",
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Pass",
+            "threshold": "Provisional: lower 95% bound > 0.55 -> Fail; upper 95% bound <= 0.55 -> Pass; otherwise Conditional",
+            "note": "Black-box distance attack: candidate closeness to released synthetic data predicts membership in real training versus held-out real data; members n=10,000, nonmembers n=10,000, released rows n=10,000.",
+            "required": true
+          },
+          "distance_membership_attack_tpr_at_1pct_fpr": {
+            "estimate": 0.0102,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Exploratory weak lower-bound attack; requires >= 100 nonmembers for FPR resolution; no low-FPR CI.",
+            "required": false
+          },
+          "exact_match_binomial_pvalue": {
+            "estimate": 0.0,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": true,
+            "status": "Available",
+            "threshold": null,
+            "note": "Plug-in null; uncertainty in p0 is not integrated."
+          },
+          "real_real_coincidence_rate": {
+            "estimate": 0.0,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "0/11443 held-out rows found in T."
+          },
+          "exact_match_excess": {
+            "estimate": 8.738967054094207e-05,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": ""
+          },
+          "distance_membership_attack_tpr_at_0_1pct_fpr": {
+            "estimate": 0.002,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Exploratory weak lower-bound attack; requires >= 1000 nonmembers for FPR resolution; no low-FPR CI.",
+            "required": false
+          }
+        },
+        "weaknesses": [
+          "An elevated share of synthetic rows is unusually close to training records.",
+          "Exact matches exceed the empirical real\u2013real coincidence null."
+        ],
+        "failure_flags": [
+          "privacy:exact_training_duplicate_rate",
+          "privacy:share_closer_than_real_real_floor",
+          "privacy:exact_match_binomial_pvalue"
+        ],
+        "threat_model": {
+          "attacker_knowledge": "released synthetic table and a candidate record",
+          "attacker_access": "black-box access to released rows; no generator access",
+          "attacker_goal": "infer whether the candidate was in real_train",
+          "members": "real_train",
+          "nonmembers": "held-out real_test",
+          "attack": "distance to closest released synthetic row",
+          "interpretation": "Empirical risk under this attacker only; not a formal privacy guarantee."
+        },
+        "details": {
+          "real_real_distance_floor_p05": 1.539415510772155,
+          "attack_available": true,
+          "distance_reference_rows": 10000,
+          "distance_query_rows": 10000,
+          "attack_member_rows": 10000,
+          "attack_nonmember_rows": 10000,
+          "attack_released_rows": 10000
+        },
+        "warnings": [
+          "Nearest-neighbor exposure was estimated from reproducible bounded samples (real reference n=10,000; synthetic query n=10,000). Exact-copy analysis still used all rows."
+        ]
+      },
+      "equity": {
+        "dimension": "equity",
+        "status": "NotEvaluated",
+        "metrics": {
+          "maximum_representation_gap": {
+            "estimate": 0.007515511666521091,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.10 -> Conditional",
+            "note": ""
+          },
+          "worst_group_retention": {
+            "estimate": null,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "NotEvaluated",
+            "threshold": null,
+            "note": "Minimum over decision-eligible groups; unavailable if any eligible group has weak TRTR."
+          }
+        },
+        "weaknesses": [],
+        "subgroup_results": [
+          {
+            "attribute": "race",
+            "level": "AfricanAmerican",
+            "n": 2036,
+            "positive": 177,
+            "negative": 1859,
+            "eligible": true,
+            "status": "Conditional",
+            "estimate": 0.7574228604696295,
+            "ci_low": 0.4966865974035588,
+            "ci_high": 1.0614665615919263,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.6331148208592798,
+            "subgroup_trtr_ci": [
+              0.5970798343813063,
+              0.67452523014052
+            ]
+          },
+          {
+            "attribute": "race",
+            "level": "Asian",
+            "n": 75,
+            "positive": 5,
+            "negative": 70,
+            "eligible": false,
+            "status": "NotEvaluated",
+            "estimate": null,
+            "ci_low": null,
+            "ci_high": null,
+            "note": "Below prespecified subgroup support; excluded from decision-eligible group set."
+          },
+          {
+            "attribute": "race",
+            "level": "Caucasian",
+            "n": 8599,
+            "positive": 758,
+            "negative": 7841,
+            "eligible": true,
+            "status": "Conditional",
+            "estimate": 0.9018884828914893,
+            "ci_low": 0.8185097300978406,
+            "ci_high": 1.0150747015194415,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.6461045199460653,
+            "subgroup_trtr_ci": [
+              0.6265197537638891,
+              0.6667542616890155
+            ]
+          },
+          {
+            "attribute": "race",
+            "level": "Hispanic",
+            "n": 239,
+            "positive": 20,
+            "negative": 219,
+            "eligible": true,
+            "status": "Conditional",
+            "estimate": 1.0959164292497623,
+            "ci_low": 0.8380877708128018,
+            "ci_high": 1.6760873986010867,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.7404109589041096,
+            "subgroup_trtr_ci": [
+              0.640851676660108,
+              0.8270532705517225
+            ]
+          },
+          {
+            "attribute": "race",
+            "level": "Other",
+            "n": 181,
+            "positive": 17,
+            "negative": 164,
+            "eligible": true,
+            "status": "NotEvaluated",
+            "estimate": 2.261410788381744,
+            "ci_low": 0.6642372007049827,
+            "ci_high": 36.29083333333361,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.586441893830703,
+            "subgroup_trtr_ci": [
+              0.4414885340823042,
+              0.7102678571428572
+            ]
+          },
+          {
+            "attribute": "race",
+            "level": "__MISSING__",
+            "n": 313,
+            "positive": 30,
+            "negative": 283,
+            "eligible": true,
+            "status": "NotEvaluated",
+            "estimate": 1.3704171934260427,
+            "ci_low": 0.5337709003604009,
+            "ci_high": 4.592322004465398,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.593168433451119,
+            "subgroup_trtr_ci": [
+              0.4945300126702567,
+              0.6838603585531178
+            ]
+          },
+          {
+            "attribute": "gender",
+            "level": "Female",
+            "n": 6112,
+            "positive": 549,
+            "negative": 5563,
+            "eligible": true,
+            "status": "Conditional",
+            "estimate": 0.9183040319725992,
+            "ci_low": 0.7947107127655393,
+            "ci_high": 1.0437999331127672,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.6512384879671078,
+            "subgroup_trtr_ci": [
+              0.6276933753978221,
+              0.6713259672314612
+            ]
+          },
+          {
+            "attribute": "gender",
+            "level": "Male",
+            "n": 5330,
+            "positive": 458,
+            "negative": 4872,
+            "eligible": true,
+            "status": "Conditional",
+            "estimate": 0.8845787583997631,
+            "ci_low": 0.7513566288403891,
+            "ci_high": 1.011019301660829,
+            "note": "Paired subgroup E-row bootstrap; chance-corrected against subgroup TRTR.",
+            "subgroup_trtr_auc": 0.6331828432321581,
+            "subgroup_trtr_ci": [
+              0.6100958843873766,
+              0.6612434242843237
+            ]
+          },
+          {
+            "attribute": "gender",
+            "level": "Unknown/Invalid",
+            "n": 1,
+            "positive": 0,
+            "negative": 1,
+            "eligible": false,
+            "status": "NotEvaluated",
+            "estimate": null,
+            "ci_low": null,
+            "ci_high": null,
+            "note": "Below prespecified subgroup support; excluded from decision-eligible group set."
+          }
+        ],
+        "eligible_groups": 7,
+        "total_groups": 9
+      },
+      "robustness": {
+        "dimension": "robustness",
+        "status": "Pass",
+        "metrics": {
+          "downstream_model_seed_auroc_cv": {
+            "estimate": 0.0030250943263210165,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Pass",
+            "threshold": "> 0.05 -> Conditional",
+            "note": ""
+          },
+          "tstr_bootstrap_relative_ci_width": {
+            "estimate": 0.06166243106699429,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Pass",
+            "threshold": "> 0.2 -> Conditional",
+            "note": ""
+          },
+          "tstr_auroc_drop_at_maximum_missingness": {
+            "estimate": 0.001278707156459058,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Pass",
+            "threshold": "> 0.1 -> Conditional",
+            "note": ""
+          },
+          "training_size_auroc_spread": {
+            "estimate": 0.024667115549528162,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Pass",
+            "threshold": "> 0.1 -> Conditional",
+            "note": ""
+          },
+          "any_utility_verdict_flip": {
+            "estimate": 0,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "Any evaluable verdict change in either direction -> Fail",
+            "note": ""
+          }
+        },
+        "weaknesses": [],
+        "stressors": [
+          {
+            "stressor": "model_seed/7103",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6295388965626966,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9029597408386126,
+                  "ci_low": 0.810616455928171,
+                  "ci_high": 0.9810709931890452,
+                  "ci_width": 0.17045453726087423,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.8312571714823113,
+                  "ci_low": 0.6826584826530789,
+                  "ci_high": 1.0044733757994302,
+                  "ci_width": 0.32181489314635126,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "model_seed/7104",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6312341969570614,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9147769482207857,
+                  "ci_low": 0.8158150931514768,
+                  "ci_high": 0.995750093455763,
+                  "ci_width": 0.17993500030428622,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.8842162172380224,
+                  "ci_low": 0.7410751903903122,
+                  "ci_high": 1.0419026241323865,
+                  "ci_width": 0.3008274337420743,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "model_seed/7105",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6295498395097864,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9030360193999591,
+                  "ci_low": 0.8139090384245987,
+                  "ci_high": 0.9871417705342697,
+                  "ci_width": 0.17323273210967094,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.6649230158505121,
+                  "ci_low": 0.5394933422929714,
+                  "ci_high": 0.8354686021359533,
+                  "ci_width": 0.2959752598429819,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "model_seed/7106",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6341518721193881,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.935114802551285,
+                  "ci_low": 0.8314013939383972,
+                  "ci_high": 1.0160704591492369,
+                  "ci_width": 0.1846690652108397,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.7911346773659984,
+                  "ci_low": 0.6440120684203772,
+                  "ci_high": 0.9765674902074964,
+                  "ci_width": 0.3325554217871193,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "model_seed/7107",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6318399604455283,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9189994640601946,
+                  "ci_low": 0.8222447974748178,
+                  "ci_high": 0.9860055023033841,
+                  "ci_width": 0.1637607048285663,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.767323560268806,
+                  "ci_low": 0.6287863160019838,
+                  "ci_high": 0.9576078361667485,
+                  "ci_width": 0.32882152016476474,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.05/0",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6252975054267501,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8733948337525329,
+                  "ci_low": 0.7778340058423318,
+                  "ci_high": 0.9545016124480032,
+                  "ci_width": 0.1766676066056715,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.9030894818473367,
+                  "ci_low": 0.7772889821892841,
+                  "ci_high": 1.0396944250208136,
+                  "ci_width": 0.26240544283152945,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.810057749926749,
+                  "ci_low": 0.6916855842179159,
+                  "ci_high": 0.979279042166612,
+                  "ci_width": 0.28759345794869606,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.9908457233047847,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.026113233768223,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.05/1",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6289729083079996,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8990144809874022,
+                  "ci_low": 0.803964728634061,
+                  "ci_high": 0.9791841635925421,
+                  "ci_width": 0.17521943495848114,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8614570141860598,
+                  "ci_low": 0.7354206221339351,
+                  "ci_high": 1.0025634322216446,
+                  "ci_width": 0.26714281008770946,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.7680384873488904,
+                  "ci_low": 0.6329312536111242,
+                  "ci_high": 0.9406143329464177,
+                  "ci_width": 0.3076830793352935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0197498036667678,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 0.9902729082930971,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.05/2",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6314292668834448,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.916136696488267,
+                  "ci_low": 0.8145101882058505,
+                  "ci_high": 0.9878106570100463,
+                  "ci_width": 0.1733004688041958,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8953682927425286,
+                  "ci_low": 0.7735896479431721,
+                  "ci_high": 1.026736934591086,
+                  "ci_width": 0.25314728664791386,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.7931679284694847,
+                  "ci_low": 0.6521989433399866,
+                  "ci_high": 0.9619440281559841,
+                  "ci_width": 0.3097450848159975,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0207684118232379,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0242679891230944,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.1/0",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6255352052687531,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8750517367633478,
+                  "ci_low": 0.7729569931870707,
+                  "ci_high": 0.9562383630507914,
+                  "ci_width": 0.18328136986372068,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8824974880800603,
+                  "ci_low": 0.7478652723332457,
+                  "ci_high": 1.0247238142556998,
+                  "ci_width": 0.27685854192245407,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.6047409759832141,
+                  "ci_low": 0.47287986964293505,
+                  "ci_high": 0.755502961897744,
+                  "ci_width": 0.28262309225480897,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Fail",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Fail",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.9967604087304693,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0455067886164509,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Fail"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.1/1",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6351717547881578,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9422239644687821,
+                  "ci_low": 0.8372413287670171,
+                  "ci_high": 1.0264154581892755,
+                  "ci_width": 0.18917412942225842,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8839198313024753,
+                  "ci_low": 0.7508499718186086,
+                  "ci_high": 1.0162514165815997,
+                  "ci_width": 0.2654014447629911,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.77695069044716,
+                  "ci_low": 0.6506110293432696,
+                  "ci_high": 0.9621994357164075,
+                  "ci_width": 0.3115884063731379,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0333908625011639,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0420956905315735,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.1/2",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.630637853918698,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.910620098273319,
+                  "ci_low": 0.8158266525822102,
+                  "ci_high": 0.999860870714736,
+                  "ci_width": 0.18403421813252574,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8684400797489665,
+                  "ci_low": 0.7418165588863798,
+                  "ci_high": 1.0003013363280284,
+                  "ci_width": 0.25848477744164866,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.8010982882959512,
+                  "ci_low": 0.6600880915263085,
+                  "ci_high": 0.9708816517700705,
+                  "ci_width": 0.3107935602437619,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0800182997414143,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0072657551257056,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.2/0",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6253825749458658,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8739878166555237,
+                  "ci_low": 0.7579583892702709,
+                  "ci_high": 0.9588283173373215,
+                  "ci_width": 0.20086992806705062,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.9155556481903395,
+                  "ci_low": 0.7808283672117742,
+                  "ci_high": 1.0354908103150304,
+                  "ci_width": 0.25466244310325625,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.8070706326027157,
+                  "ci_low": 0.6730507923244977,
+                  "ci_high": 0.9861498632878323,
+                  "ci_width": 0.31309907096333456,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.8964992193531486,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0294213402848131,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.2/1",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6284584946387172,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8954287253122776,
+                  "ci_low": 0.8059048070598592,
+                  "ci_high": 0.9727459415989551,
+                  "ci_width": 0.16684113453909588,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8864137832892294,
+                  "ci_low": 0.7508988764223519,
+                  "ci_high": 1.0263243515969656,
+                  "ci_width": 0.2754254751746137,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.7399245753820848,
+                  "ci_low": 0.6074204529065899,
+                  "ci_high": 0.8990999070977213,
+                  "ci_width": 0.2916794541911314,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.9950696274076718,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 0.9722897307031781,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "missingness/0.2/2",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6309394986341298,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9127227333991309,
+                  "ci_low": 0.8218211797269068,
+                  "ci_high": 0.9970204976006262,
+                  "ci_width": 0.17519931787371934,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.9307177263207522,
+                  "ci_low": 0.79476026054112,
+                  "ci_high": 1.057597258500058,
+                  "ci_width": 0.2628369979589379,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.7436247294449012,
+                  "ci_low": 0.6028473156789389,
+                  "ci_high": 0.9039557634977691,
+                  "ci_width": 0.30110844781883017,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0677871350192927,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0470269634291474,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "training_size/0.25",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6048717810131684,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.7310159243104413,
+                  "ci_low": 0.6328450278149669,
+                  "ci_high": 0.8320729431012569,
+                  "ci_width": 0.19922791528629002,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.6538976804090374,
+                  "ci_low": 0.5113987769143342,
+                  "ci_high": 0.7967775251215965,
+                  "ci_width": 0.2853787482072623,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Fail",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.41901683348928626,
+                  "ci_low": 0.2794190619397746,
+                  "ci_high": 0.5649835781974158,
+                  "ci_width": 0.28556451625764123,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Fail",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Fail, gradient_boosting=Fail",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.931044631025223,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 0.6239398392492269,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Fail",
+                "gradient_boosting": "Fail"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "training_size/0.5",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6102303043128914,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.7683678775722455,
+                  "ci_low": 0.6706037249796205,
+                  "ci_high": 0.8627703952534016,
+                  "ci_width": 0.1921666702737811,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.668520001207447,
+                  "ci_low": 0.5204785958875674,
+                  "ci_high": 0.8307358004545462,
+                  "ci_width": 0.3102572045669788,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.46968478558803767,
+                  "ci_low": 0.2961770924911217,
+                  "ci_high": 0.6222219930230052,
+                  "ci_width": 0.3260449005318835,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Fail",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Fail",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 0.9927901433732136,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 0.7264297906288675,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Fail"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "training_size/0.75",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.62221416356109,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.8519021883324314,
+                  "ci_low": 0.7420821130221603,
+                  "ci_high": 0.9381625940995727,
+                  "ci_width": 0.19608048107741238,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8348903164228542,
+                  "ci_low": 0.6978875591464259,
+                  "ci_high": 0.9772143284639756,
+                  "ci_width": 0.27932676931754974,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.6061878432150923,
+                  "ci_low": 0.44946100199504535,
+                  "ci_high": 0.7696889554978928,
+                  "ci_width": 0.3202279535028475,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Fail",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Fail",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": true,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.0069594253700571,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 0.9274136504048393,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Fail"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          },
+          {
+            "stressor": "training_size/1.0",
+            "utility_status": "Conditional",
+            "tstr_auroc": 0.6295388965626966,
+            "verdict_flip": false,
+            "utility": {
+              "dimension": "utility_reference_calibrated",
+              "status": "Conditional",
+              "metrics": {
+                "synthetic_retention_random_forest": {
+                  "estimate": 0.9029597408386126,
+                  "ci_low": 0.810616455928171,
+                  "ci_high": 0.9810709931890452,
+                  "ci_width": 0.17045453726087423,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_random_forest": {
+                  "estimate": 0.9526363197385043,
+                  "ci_low": 0.8716542147163016,
+                  "ci_high": 1.04117300516454,
+                  "ci_width": 0.16951879044823848,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_logistic_regression": {
+                  "estimate": 0.8921089059241073,
+                  "ci_low": 0.7630688115962344,
+                  "ci_high": 1.026489119188903,
+                  "ci_width": 0.26342030759266855,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_logistic_regression": {
+                  "estimate": 0.9193598233678282,
+                  "ci_low": 0.8286411440448838,
+                  "ci_high": 1.030828195987053,
+                  "ci_width": 0.20218705194216935,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "synthetic_retention_gradient_boosting": {
+                  "estimate": 0.8312571714823113,
+                  "ci_low": 0.6826584826530789,
+                  "ci_high": 1.0044733757994302,
+                  "ci_width": 0.32181489314635126,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Conditional",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+                },
+                "real_reference_retention_gradient_boosting": {
+                  "estimate": 0.958478653320857,
+                  "ci_low": 0.8085246355360179,
+                  "ci_high": 1.111418027440172,
+                  "ci_width": 0.302893391904154,
+                  "interval_type": "paired held-out real-test bootstrap (95%)",
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+                },
+                "probe_agreement": {
+                  "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": null,
+                  "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+                },
+                "relative_calibration_in_the_large": {
+                  "estimate": 1.010121929891964,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+                },
+                "relative_calibration_slope": {
+                  "estimate": 1.0421626126233448,
+                  "ci_low": null,
+                  "ci_high": null,
+                  "ci_width": null,
+                  "interval_type": null,
+                  "higher_is_worse": false,
+                  "flag": false,
+                  "status": "Available",
+                  "threshold": "outside [0.80, 1.25] -> Conditional",
+                  "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+                }
+              },
+              "weaknesses": [],
+              "probe_verdicts": {
+                "random_forest": "Conditional",
+                "logistic_regression": "Conditional",
+                "gradient_boosting": "Conditional"
+              },
+              "provisional_margins": {
+                "retention_fail": 0.8,
+                "retention_conditional": 0.9,
+                "calibration_ratio_band": 1.25
+              },
+              "raw_status": "Conditional",
+              "missing_required_evidence": []
+            }
+          }
+        ],
+        "verdict_flip": false,
+        "constant_predictor": false,
+        "baseline_utility_status": "Conditional"
+      }
+    },
+    "raw_reference": {
+      "fidelity": {
+        "dimension": "fidelity_reference_calibrated",
+        "status": "Pass",
+        "metrics": {
+          "mass_weighted_coverage_deficit": {
+            "estimate": 0.0003495586821637975,
+            "ci_low": 8.738967054089386e-05,
+            "ci_high": 0.0006139124355501129,
+            "ci_width": 0.000526522765009219,
+            "interval_type": "paired reference-row bootstrap (95%)",
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "lower 95% bound > 0.05 -> Fail",
+            "note": "Worst column 'admission_source_id': share of reference patients whose category is absent from the synthetic table, minus the same share for the real floor (synthetic 0.9997; floor 1.0000)."
+          },
+          "detection_auc": {
+            "estimate": 0.5066821519156892,
+            "ci_low": 0.4997037041619368,
+            "ci_high": 0.5135475388581906,
+            "ci_width": 0.013843834696253776,
+            "interval_type": "bootstrap over cross-fitted predictions (95%)",
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "lower bound > floor upper bound + 0.05 -> Conditional (Fail requires null calibration)",
+            "note": "Cross-fitted gradient-boosting classifier two-sample test against the held-out real reference; real-vs-real floor AUC 0.511."
+          },
+          "pmse_ratio_to_real_floor": {
+            "estimate": 0.9939549062925532,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Propensity-score MSE divided by the real-vs-real pMSE (empirical null; 1 = like real)."
+          },
+          "mean_normalized_wasserstein_excess": {
+            "estimate": 0.003672147713779347,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.20 -> Conditional",
+            "note": "Synthetic 0.0156 minus real floor 0.0120."
+          },
+          "mean_jensen_shannon_divergence_excess": {
+            "estimate": 4.522974847516806e-06,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.10 -> Conditional",
+            "note": "Synthetic 0.0019 minus real floor 0.0019."
+          },
+          "association_matrix_error_excess": {
+            "estimate": 0.0008793904437233765,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.15 -> Conditional",
+            "note": "Synthetic 0.0109 minus real floor 0.0100."
+          },
+          "worst_column_normalized_wasserstein": {
+            "estimate": 0.03181955004029634,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Worst continuous column 'num_medications' (reported so a column average cannot hide one broken variable); floor 0.0202."
+          },
+          "clinical_constraint_violation_rate": {
+            "estimate": 0.0,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": true,
+            "flag": false,
+            "status": "Available",
+            "threshold": "> 0.01 -> Fail",
+            "note": "{'time_in_hospital >= 0': 0.0, 'num_lab_procedures >= 0': 0.0, 'num_procedures >= 0': 0.0, 'num_medications >= 0': 0.0, 'number_outpatient >= 0': 0.0, 'number_emergency >= 0': 0.0, 'number_inpatient >= 0': 0.0, 'number_diagnoses >= 0': 0.0, 'time_in_hospital >= 1': 0.0, 'time_in_hospital <= 14': 0.0}"
+          }
+        },
+        "weaknesses": [],
+        "provisional_margins": {
+          "coverage_margin": 0.05,
+          "detection_margin": 0.05,
+          "wasserstein_excess": 0.2,
+          "jsd_excess": 0.1,
+          "association_excess": 0.15,
+          "constraint_rate_fail": 0.01
+        },
+        "per_column_coverage": {
+          "race": 1.0,
+          "gender": 1.0,
+          "age": 1.0,
+          "admission_type_id": 0.9998252206589181,
+          "discharge_disposition_id": 0.9998252206589181,
+          "admission_source_id": 0.9996504413178362,
+          "diag_1": 0.9888141221707594,
+          "max_glu_serum": 1.0,
+          "A1Cresult": 1.0,
+          "insulin": 1.0,
+          "change": 1.0,
+          "diabetesMed": 1.0,
+          "readmitted_30d": 1.0
+        },
+        "floor_per_column_coverage": {
+          "race": 1.0,
+          "gender": 1.0,
+          "age": 1.0,
+          "admission_type_id": 1.0,
+          "discharge_disposition_id": 0.9995630516472953,
+          "admission_source_id": 1.0,
+          "diag_1": 0.9874158874421043,
+          "max_glu_serum": 1.0,
+          "A1Cresult": 1.0,
+          "insulin": 1.0,
+          "change": 1.0,
+          "diabetesMed": 1.0,
+          "readmitted_30d": 1.0
+        }
+      },
+      "utility": {
+        "dimension": "utility_reference_calibrated",
+        "status": "Conditional",
+        "metrics": {
+          "synthetic_retention_random_forest": {
+            "estimate": 0.9029597408386126,
+            "ci_low": 0.810616455928171,
+            "ci_high": 0.9810709931890452,
+            "ci_width": 0.17045453726087423,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_random_forest": {
+            "estimate": 0.9526363197385043,
+            "ci_low": 0.8716542147163016,
+            "ci_high": 1.04117300516454,
+            "ci_width": 0.16951879044823848,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "synthetic_retention_logistic_regression": {
+            "estimate": 0.8921089059241073,
+            "ci_low": 0.7630688115962344,
+            "ci_high": 1.026489119188903,
+            "ci_width": 0.26342030759266855,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_logistic_regression": {
+            "estimate": 0.9193598233678282,
+            "ci_low": 0.8286411440448838,
+            "ci_high": 1.030828195987053,
+            "ci_width": 0.20218705194216935,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "synthetic_retention_gradient_boosting": {
+            "estimate": 0.8312571714823113,
+            "ci_low": 0.6826584826530789,
+            "ci_high": 1.0044733757994302,
+            "ci_width": 0.32181489314635126,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Conditional",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data."
+          },
+          "real_reference_retention_gradient_boosting": {
+            "estimate": 0.958478653320857,
+            "ci_low": 0.8085246355360179,
+            "ci_high": 1.111418027440172,
+            "ci_width": 0.302893391904154,
+            "interval_type": "paired held-out real-test bootstrap (95%)",
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Chance-corrected AUROC retention versus the same probe trained on real training data. Positive control: an independent real sample; should be near 1."
+          },
+          "probe_agreement": {
+            "estimate": "random_forest=Conditional, logistic_regression=Conditional, gradient_boosting=Conditional",
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": null,
+            "note": "Primary verdict is the v0.3 random forest; a primary Pass becomes Conditional only if another probe confidently Fails (probe-dependent utility)."
+          },
+          "relative_calibration_in_the_large": {
+            "estimate": 1.010121929891964,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": "outside [0.80, 1.25] -> Conditional",
+            "note": "Observed/expected events of the synthetic-trained logistic probe on real test data, divided by the real-trained value (0.981)."
+          },
+          "relative_calibration_slope": {
+            "estimate": 1.0421626126233448,
+            "ci_low": null,
+            "ci_high": null,
+            "ci_width": null,
+            "interval_type": null,
+            "higher_is_worse": false,
+            "flag": false,
+            "status": "Available",
+            "threshold": "outside [0.80, 1.25] -> Conditional",
+            "note": "Calibration slope of the synthetic-trained logistic probe divided by the real-trained slope (0.694)."
+          }
+        },
+        "weaknesses": [],
+        "probe_verdicts": {
+          "random_forest": "Conditional",
+          "logistic_regression": "Conditional",
+          "gradient_boosting": "Conditional"
+        },
+        "provisional_margins": {
+          "retention_fail": 0.8,
+          "retention_conditional": 0.9,
+          "calibration_ratio_band": 1.25
+        }
+      }
+    },
+    "signals": {
+      "fidelity": {
+        "mass_weighted_coverage_deficit": {
+          "estimate": 0.0003495586821637975,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "mean_normalized_wasserstein_excess": {
+          "estimate": 0.003672147713779347,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "mean_jensen_shannon_divergence_excess": {
+          "estimate": 4.522974847516806e-06,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "association_matrix_error_excess": {
+          "estimate": 0.0008793904437233765,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "clinical_constraint_violation_rate": {
+          "estimate": 0.0,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "detection_auc_excess": {
+          "estimate": -0.003999121780778325,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        }
+      },
+      "utility": {
+        "synthetic_retention_random_forest": {
+          "estimate": 0.9810709931890452,
+          "higher_is_worse": false,
+          "status": "Available",
+          "note": ""
+        },
+        "synthetic_retention_logistic_regression": {
+          "estimate": 1.026489119188903,
+          "higher_is_worse": false,
+          "status": "Available",
+          "note": ""
+        },
+        "synthetic_retention_gradient_boosting": {
+          "estimate": 1.0044733757994302,
+          "higher_is_worse": false,
+          "status": "Available",
+          "note": ""
+        },
+        "relative_calibration_in_the_large_high": {
+          "estimate": 1.010121929891964,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "relative_calibration_in_the_large_low": {
+          "estimate": 1.010121929891964,
+          "higher_is_worse": false,
+          "status": "Available",
+          "note": ""
+        },
+        "relative_calibration_slope_high": {
+          "estimate": 1.0421626126233448,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "relative_calibration_slope_low": {
+          "estimate": 1.0421626126233448,
+          "higher_is_worse": false,
+          "status": "Available",
+          "note": ""
+        }
+      },
+      "privacy": {
+        "exact_match_excess": {
+          "estimate": 8.738967054094207e-05,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "share_closer_than_real_real_floor": {
+          "estimate": 0.0543,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "distance_membership_attack_auc": {
+          "estimate": 0.500913485,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        }
+      },
+      "equity": {
+        "maximum_representation_gap": {
+          "estimate": 0.007515511666521091,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "worst_group_retention": {
+          "estimate": null,
+          "higher_is_worse": false,
+          "status": "NotEvaluated",
+          "note": "No fully evaluable eligible subgroup set."
+        }
+      },
+      "robustness": {
+        "downstream_model_seed_auroc_cv": {
+          "estimate": 0.0030250943263210165,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "tstr_bootstrap_relative_ci_width": {
+          "estimate": 0.06166243106699429,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "tstr_auroc_drop_at_maximum_missingness": {
+          "estimate": 0.001278707156459058,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        },
+        "training_size_auroc_spread": {
+          "estimate": 0.024667115549528162,
+          "higher_is_worse": true,
+          "status": "Available",
+          "note": ""
+        }
+      }
+    },
+    "hard_fail": {
+      "fidelity": false,
+      "utility": false,
+      "privacy": false,
+      "equity": false,
+      "robustness": false
+    },
+    "gate_dimensions": [
+      "fidelity",
+      "utility",
+      "privacy"
+    ],
+    "gate": "Fail",
+    "scope": "provisional v0.4.1; gate over fidelity, utility and privacy; equity and robustness are non-gating diagnostics; calibration is a separate saved-evidence wrapper"
+  },
+  "sdmetrics": {
+    "score": 0.9604479281685233,
+    "properties": [
+      {
+        "Property": "Column Shapes",
+        "Score": 0.9896190932504434,
+        "status": "Available"
+      },
+      {
+        "Property": "Column Pair Trends",
+        "Score": 0.9312767630866032,
+        "status": "Available"
+      }
+    ],
+    "omitted_properties": [],
+    "reason": "",
+    "native_missingness_policy": "Native SDMetrics headline retained; omitted property scores recorded explicitly."
+  },
+  "decisions": {
+    "by_alpha": {
+      "0.025": {
+        "gate": "Pass",
+        "gate_family_pvalue": 0.5294117647058824,
+        "dimensions": {
+          "fidelity": "Pass",
+          "utility": "Pass",
+          "privacy": "Pass",
+          "equity": "NotEvaluated",
+          "robustness": "Fail"
+        },
+        "accepted_matched": {
+          "Gate": true,
+          "Mean": true,
+          "Geometric": true,
+          "Harmonic": true,
+          "SDMetrics": true
+        },
+        "matched_notes": {
+          "Mean": "matched threshold 0.507 (rank 1 of 50)",
+          "Geometric": "matched threshold 0.501176 (rank 1 of 50)",
+          "Harmonic": "matched threshold 0.488969 (rank 1 of 50)",
+          "SDMetrics": "matched threshold 0.94926 (rank 1 of 50)"
+        }
+      },
+      "0.05": {
+        "gate": "Pass",
+        "gate_family_pvalue": 0.5294117647058824,
+        "dimensions": {
+          "fidelity": "Pass",
+          "utility": "Pass",
+          "privacy": "Pass",
+          "equity": "NotEvaluated",
+          "robustness": "Fail"
+        },
+        "accepted_matched": {
+          "Gate": true,
+          "Mean": true,
+          "Geometric": true,
+          "Harmonic": true,
+          "SDMetrics": true
+        },
+        "matched_notes": {
+          "Mean": "matched threshold 0.518194 (rank 2 of 50)",
+          "Geometric": "matched threshold 0.508886 (rank 2 of 50)",
+          "Harmonic": "matched threshold 0.49574 (rank 2 of 50)",
+          "SDMetrics": "matched threshold 0.951069 (rank 2 of 50)"
+        }
+      },
+      "0.1": {
+        "gate": "Pass",
+        "gate_family_pvalue": 0.5294117647058824,
+        "dimensions": {
+          "fidelity": "Pass",
+          "utility": "Pass",
+          "privacy": "Pass",
+          "equity": "NotEvaluated",
+          "robustness": "Fail"
+        },
+        "accepted_matched": {
+          "Gate": true,
+          "Mean": true,
+          "Geometric": true,
+          "Harmonic": true,
+          "SDMetrics": true
+        },
+        "matched_notes": {
+          "Mean": "matched threshold 0.550994 (rank 5 of 50)",
+          "Geometric": "matched threshold 0.530154 (rank 5 of 50)",
+          "Harmonic": "matched threshold 0.513145 (rank 5 of 50)",
+          "SDMetrics": "matched threshold 0.954438 (rank 5 of 50)"
+        }
+      }
+    },
+    "dimension_scores": {
+      "fidelity": 0.5818857930270696,
+      "utility": 0.536667658078762,
+      "privacy": 0.5505053551285535
+    },
+    "score_missing": {
+      "fidelity": [],
+      "utility": [],
+      "privacy": []
+    }
+  },
+  "seconds": 119.93927229195833
+}

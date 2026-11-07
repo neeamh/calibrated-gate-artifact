@@ -46,6 +46,6 @@ b.set_xticks(list(xs), [f'{nm}\n{h}/50' for nm, h in zip(names, hon)], fontsize=
 b.set_xlabel('rule (honest audit runs it accepts)', fontsize=6.5)
 b.set_ylim(0, 1.12); b.set_yticks([0, .5, 1], ['0', '50%', '100%'])
 b.set_title('(b) Flawed real tables accepted, equal honest-data cost', loc='left', fontsize=7.5)
-fig.savefig(HERE / 'fig' / 'fig1.pdf', bbox_inches='tight')
-fig.savefig(HERE / 'fig' / 'fig1.png', dpi=220, bbox_inches='tight')
+fig.savefig(HERE / 'fig' / 'fig1_original.pdf', bbox_inches='tight')
+fig.savefig(HERE / 'fig' / 'fig1_original.png', dpi=220, bbox_inches='tight')
 print('ok', vals, bad, hon)

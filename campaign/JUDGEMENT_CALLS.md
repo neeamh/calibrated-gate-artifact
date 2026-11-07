@@ -98,3 +98,33 @@ The claim was locked first: averaging lets one serious failure hide behind good 
 7. **Injection intended dimensions** now name gating dimensions only. Subgroup suppression maps to fidelity, its only route through the gate; this documents what the narrower gate can and cannot see.
 8. **Matched-rate judge comparison (primary).** Under the v0.4 rule τ* (lowest score among 3 positive controls), each judge ends up at a different honest-data rejection rate, so known-bad acceptance is not compared at equal cost. In v0.4.1, every compensatory judge is calibrated on the same 50 fit runs with the same full-conformal pooling as the gate: each run's three dimension scores and combined score are computed with the candidate pooled in, and the table is rejected below the floor(α(n+1))-th lowest fit-run score. SDMetrics, whose score does not depend on the fit runs, uses the same order statistic of the fit runs' native scores. All judges therefore share nominal honest-data rejection floor(α(n+1))/(n+1). τ* is kept as a secondary analysis. Prespecified expectation, from max-type versus sum-type tests: at matched cost the gate accepts fewer single-flaw tables than the arithmetic mean and SDMetrics, while the harmonic mean, which is dominated by its lowest score, may come close to the gate. A dry run of the new analysis code on the v0.4 profiles (old split, non-confirmatory) showed this pattern; that run tested the code only and is not evidence.
 9. **Unchanged:** frozen v0.3 (reported as the uncalibrated five-dimension baseline), all reference statistics (regression fixture), generators, doses, splits, privacy, equity and robustness metric code, and the exact-row coincidence policies above.
+
+## v0.4.2 follow-up amendment (7 November 2026, before any follow-up table was scored)
+
+The full design and analysis plan are in `PREREGISTRATION_v0.4.2.md`. The judgement calls:
+
+1. **Audit null runs become the bases.** Review showed that the main_v5 known-bad set is one base
+   table with three injection seeds, and that main-experiment tables are larger than the null runs
+   the calibration was fitted on. Injecting the same flaws into the 50 held-out audit candidates
+   fixes both: 50 independently split bases, each at the fit runs' role sizes. The bases are processed
+   in the frozen audit order, so a partial run is a random subset.
+2. **Nothing frozen changes.** The follow-up uses the exact library that produced main_v5 (checked
+   against `implementation_hashes.json`), the frozen calibration model (checked by SHA-256), the saved
+   reference context of each audit run, and the campaign's own judges. No model is refit.
+3. **The frozen v0.3 profiler is not run.** It is not part of any follow-up comparison and would
+   triple the cost per table.
+4. **Dense flaws use three mild components fixed in advance**, one per gating dimension: F
+   (`number_inpatient` rotated in 50% of rows), U (outcome rotated in 10% of rows) and P (one training
+   row copied in). Doses were chosen from main_v5 evidence and the code, not from follow-up results.
+   Outcome rotation reuses the campaign's `feature_shuffle` perturbation with the outcome as the
+   column, so prevalence is unchanged.
+5. **Seed streams are per base and per flaw family**, so doses of one family are nested and every
+   dense combination contains exactly the changes of its parts. F alone is the single-flaw cell
+   `feature_shuffle@0.5` and is not rerun.
+6. **Supplementary audit runs use repeat ids 100 to 249** with the v0.4.1 seed salt, so they are fresh
+   draws by the same procedure, and are scored only with the frozen model. Their roles and contexts
+   are deleted after scoring to save disk space; their profiles are kept.
+7. **Calibration is also validated by reshuffled splits** of the 100 main_v5 null runs (1,000 random
+   50/50 splits, refit with the campaign's `NullCalibrator`), computed from saved evidence. The frozen
+   model remains the one used for every decision.
+8. **A table a rule cannot score counts as not accepted** by that rule, and such cases are reported.

@@ -7,9 +7,15 @@ The paper asks whether the rule that combines fidelity, utility and privacy evid
 synthetic clinical tables pass, and whether a non-compensatory gate can reject flawed tables without
 rejecting real patients. This repository lets a reader do two things:
 
-1. **Regenerate every number, table and figure in the paper** from the saved campaign results, in under
-   a minute on a laptop, without the source data. This is the main reproducibility check.
-2. **Rerun the full campaign** from the public source data (several hours on a CPU).
+1. **Regenerate every number, table and figure in the paper** from the saved results, on a laptop,
+   without the source data. This is the main reproducibility check.
+2. **Rerun the experiments** from the public source data: the main campaign and the v0.4.2 follow-up
+   (several hours each on a CPU).
+
+The paper's primary evidence is the **v0.4.2 follow-up**: flaws planted in the 50 held-out audit runs
+of the main campaign (950 flawed tables), 150 fresh honest runs, reshuffled-split calibration checks
+and sensitivity analyses on the 50 bases. The main campaign's 39-table comparison is reported in the
+paper as the original analysis, and the follow-up reuses its frozen calibration model unchanged.
 
 ## 1. Regenerate the paper's numbers (recommended)
 
@@ -22,22 +28,33 @@ pip install --no-deps third_party/syntrustbench_v030
 PYTHON=python ./reproduce_paper_numbers.sh
 ```
 
-The script reruns every analysis on the saved evidence in `results/main_v5/`, writes the LaTeX macros,
-tables and figures to `paper/generated/`, and checks that each regenerated `.tex` and `.json` file is
-byte-identical to the committed version. It ends with `All regenerated numbers match the paper.`
-We checked this in a fresh environment on Python 3.13.
+The script reruns every analysis on the saved evidence in `results/`, writes the LaTeX macros, tables
+and figures to `paper/generated/`, and checks every regenerated file against the committed version:
+`.tex` and `.csv` byte for byte, `.json` up to rounding in the last digits. It ends with
+`All regenerated numbers match the paper.` The full run takes about 10 minutes, most of it the 1,000
+reshuffled calibration splits; `QUICK=1` skips those and takes about 3 minutes.
 
-| Paper item | Script | Output in `paper/generated/` |
+| Paper item | Script | Output |
 |---|---|---|
-| All numbers in the text, Tables 3 and 4 | `make_numbers.py` | `numbers.tex`, `table_admission.tex`, `table_injection.tex`, `numbers.json` |
-| Figure 1 | `make_figures.py` | `fig/fig1.pdf` |
-| Table 5, Sec. 5.3 counts, temperature sensitivity | `extra_analyses.py`, `mechanism_status.py`, `make_extra_tables.py` | `table_mechanism.tex`, `numbers_extra.tex` |
-| Appendix C (percentile mapping, no proximity signal), Appendix B (Gaussian Copula set), Appendix D (calibration diagnostics, Figure 2) | `reanalysis.py`, `make_reanalysis_tables.py` | `numbers_reanalysis.tex`, `table_sensitivity_all.tex`, `fig/fig_pvalues.pdf` |
+| **Primary results:** abstract and Sections 5.1--5.6 numbers, results figure, Table 4 (flawed tables accepted, 50 bases), Appendix C table (sensitivity on the 50 bases) | `extract_followup_tables.py`, `followup_reanalysis.py`, `make_followup.py` | `numbers_followup.tex`, `table_followup.tex`, `table_followup_sensitivity.tex`, `fig/fig1.pdf`; analysis files in `results/followup_v042/analysis/` |
+| Calibration validation by 1,000 reshuffled splits (Section 5.1, Appendix D) | `resplit_validation.py` | `resplit_validation.json` |
+| Table 3 (false alarms on honest data), Section 5.7 (original analysis), Appendix B | `make_numbers.py`, `extra_analyses.py`, `mechanism_status.py`, `make_extra_tables.py`, `reanalysis.py`, `make_reanalysis_tables.py` | `numbers.tex`, `numbers_extra.tex`, `numbers_reanalysis.tex`, `table_admission.tex` and others |
+| Original 39-table figure and tables (superseded, kept for the record) | `make_figures.py`, `make_extra_tables.py` | `fig/fig1_original.pdf`, `table_injection.tex`, `table_sensitivity_all.tex` |
+| Dimension icons in the design figure | `icons/make_*_icon.py` | SVG and PDF (run separately) |
 
 The analysis scripts import the campaign's own calibration and judge code from `campaign/`, so every
 decision is re-derived with the code that produced the results; nothing is refit.
 
-## 2. Rerun the full campaign
+## 2. Rerun the experiments
+
+**Follow-up (v0.4.2).** `campaign/followup_v042/` holds the run script, its prespecified design
+(`PREREGISTRATION_v0.4.2.md`, written before any follow-up table was scored), the run guide and the
+analysis scripts. The run needs the original campaign's run folder, so it follows a full campaign
+rerun. The judgement calls of the follow-up are appended to `campaign/JUDGEMENT_CALLS.md`. The saved
+follow-up profiles (evidence and decisions of every table, no patient records) are in
+`results/followup_v042/profiles/` and `supplementary/`.
+
+**Main campaign.**
 
 See `campaign/README.md`. In short: download the source data as described in `data/README.md`,
 install `requirements-campaign.txt` and the frozen dependency in `third_party/`, open
@@ -60,7 +77,14 @@ campaign/
   JUDGEMENT_CALLS.md             every design choice and amendment, with its reason
   README.md                      how to run the campaign
 third_party/syntrustbench_v030/  frozen v0.3 gate evaluated in the paper (pinned commit; see its README)
+  followup_v042/                 v0.4.2 follow-up: run script, prespecified design, analysis scripts
+results/followup_v042/
+  profiles/baseXX/               evidence and decisions for the 19 flawed tables built on each of 50 bases
+  supplementary/                 150 fresh honest real-versus-real runs scored with the frozen model
+  analysis/                      summary.json, sensitivity.json and the CSV tables the paper reads
+  manifest.json                  run manifest (bases, conditions, seeds, versions, script and model hashes)
 results/main_v5/
+  configuration.json             campaign configuration (read by the follow-up analysis)
   analysis_tables/               campaign summary tables used by the paper
   profiles/jobs/                 saved evidence for all 217 evaluated tables and the frozen calibration model
 paper/
@@ -85,7 +109,8 @@ citation in `campaign/PROTOCOL_v0.4.1.md`, and the clone address of the frozen v
 `campaign/syntrustbench_campaign/environment.py` and the notebook (now read from the
 `FROZEN_V030_REPOSITORY` environment variable). No calculation was changed; the reproduction check
 in step 1 confirms that every number is unchanged. Local file paths in the saved evidence were
-replaced by `<RUN_ROOT>`, and the metadata of `third_party/` was redacted.
+replaced by `<RUN_ROOT>`, the absolute paths in `results/followup_v042/manifest.json` by
+repository-relative ones, and the metadata of `third_party/` was redacted.
 
 ## Data and licence
 
